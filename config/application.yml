@@ -8,11 +8,13 @@ spring:
     url: jdbc:mysql://192.168.44.53:3306/cn_api?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=UTC&failOverReadOnly=false&connectTimeout=10000&socketTimeout=30000
     username: root
     password: 111111
+logging:
+  config: ./config/logback-spring.xml
 tsg:
   system:
     url: http://192.168.44.3:80
-    username: wangwei
-    password: ImlUl8/Hdt0MaS1LEnyuCg==
+    username:
+    password:
     token: aa2bdec5518ad131f71944b13ce5c298&1&
     httpTimeout: 3600000
   object:
@@ -20,25 +22,179 @@ tsg:
       #指定排除的IP. 1.如果没有可不写值，2.若有多个用英文逗号,分隔如: 127.0.0.1,127.0.0.2，3.可适用IP段匹配，如：127.*
       excludeValue: 0.0.0.0,255.255.255.255,127.*,8.8.8.8,1.1.1.1
       cyberghostvpn_serverip:
-        id: 1309738
-        name: cn_vpn_ip_learning
+        id: 1
+        name: cyberghostvpn_serverip
         update:
-          cron: 0 0/1 * * * ?
-          enable: true
+          cron: 0 0 0/1 * * ?
+          enable: false
           sql: SELECT addr_format AS addrFormat, ip1 AS ip1, ip2 AS ip2 FROM cn_vpn_learning_ip WHERE knowledge_id = 10
         delete:
-          cron: 0 0/1 * * * ?
-          enable: true
+          cron: 0 0 0/1 * * ?
+          enable: false
+          offsetSecond: -600
+      hotspotvpn_serverip:
+        id: 2
+        name: hotspotvpn_serverip
+        update:
+          cron: 0 0 0/1 * * ?
+          enable: false
+          sql: SELECT addr_format AS addrFormat, ip1 AS ip1, ip2 AS ip2 FROM cn_vpn_learning_ip WHERE knowledge_id = 10
+        delete:
+          cron: 0 0 0/1 * * ?
+          enable: false
+          offsetSecond: -600
+      ipvanishvpn_serverip:
+        id: 3
+        name: ipvanishvpn_serverip
+        update:
+          cron: 0 0 0/1 * * ?
+          enable: false
+          sql: SELECT addr_format AS addrFormat, ip1 AS ip1, ip2 AS ip2 FROM cn_vpn_learning_ip WHERE knowledge_id = 10
+        delete:
+          cron: 0 0 0/1 * * ?
+          enable: false
+          offsetSecond: -600
+      geckovpn_serverip:
+        id: 4
+        name: geckovpn_serverip
+        update:
+          cron: 0 0 0/1 * * ?
+          enable: false
+          sql: SELECT addr_format AS addrFormat, ip1 AS ip1, ip2 AS ip2 FROM cn_vpn_learning_ip WHERE knowledge_id = 10
+        delete:
+          cron: 0 0 0/1 * * ?
+          enable: false
+          offsetSecond: -600
+      ivacyvpn_serverip:
+        id: 5
+        name: ivacyvpn_serverip
+        update:
+          cron: 0 0 0/1 * * ?
+          enable: false
+          sql: SELECT addr_format AS addrFormat, ip1 AS ip1, ip2 AS ip2 FROM cn_vpn_learning_ip WHERE knowledge_id = 10
+        delete:
+          cron: 0 0 0/1 * * ?
+          enable: false
+          offsetSecond: -600
+      turbovpn_serverip:
+        id: 6
+        name: turbovpn_serverip
+        update:
+          cron: 0 0 0/1 * * ?
+          enable: false
+          sql: SELECT addr_format AS addrFormat, ip1 AS ip1, ip2 AS ip2 FROM cn_vpn_learning_ip WHERE knowledge_id = 10
+        delete:
+          cron: 0 0 0/1 * * ?
+          enable: false
+          offsetSecond: -600
+      vpnunlimited_serverip:
+        id: 7
+        name: vpnunlimited_serverip
+        update:
+          cron: 0 0 0/1 * * ?
+          enable: false
+          sql: SELECT addr_format AS addrFormat, ip1 AS ip1, ip2 AS ip2 FROM cn_vpn_learning_ip WHERE knowledge_id = 10
+        delete:
+          cron: 0 0 0/1 * * ?
+          enable: false
+          offsetSecond: -600
+      windscribevpn_serverip:
+        id: 8
+        name: windscribevpn_serverip
+        update:
+          cron: 0 0 0/1 * * ?
+          enable: false
+          sql: SELECT addr_format AS addrFormat, ip1 AS ip1, ip2 AS ip2 FROM cn_vpn_learning_ip WHERE knowledge_id = 10
+        delete:
+          cron: 0 0 0/1 * * ?
+          enable: false
+          offsetSecond: -600
+      vpn4fame_serverip:
+        id: 9
+        name: vpn4fame_serverip
+        update:
+          cron: 0 0 0/1 * * ?
+          enable: false
+          sql: SELECT addr_format AS addrFormat, ip1 AS ip1, ip2 AS ip2 FROM cn_vpn_learning_ip WHERE knowledge_id = 10
+        delete:
+          cron: 0 0 0/1 * * ?
+          enable: false
+          offsetSecond: -600
+      protonvpn_ip:
+        id: 10
+        name: protonvpn_ip
+        update:
+          cron: 0 0 0/1 * * ?
+          enable: false
+          sql: SELECT addr_format AS addrFormat, ip1 AS ip1, ip2 AS ip2 FROM cn_vpn_learning_ip WHERE knowledge_id = 10
+        delete:
+          cron: 0 0 0/1 * * ?
+          enable: false
+          offsetSecond: -600
+      expressvpn_ip:
+        id: 11
+        name: expressvpn_ip
+        update:
+          cron: 0 0 0/1 * * ?
+          enable: false
+          sql: SELECT addr_format AS addrFormat, ip1 AS ip1, ip2 AS ip2 FROM cn_vpn_learning_ip WHERE knowledge_id = 10
+        delete:
+          cron: 0 0 0/1 * * ?
+          enable: false
           offsetSecond: -600
     fqdn:
       cyberghostvpn_servername:
-        id: 1309740
-        name: cn_vpn_ip_learning
+        id: 101
+        name: cyberghostvpn_servername
         update:
-          cron: 35 0/1 * * * ?
-          enable: true
+          cron: 0 0 0/1 * * ?
+          enable: false
           sql: SELECT domain AS domain FROM cn_vpn_learning_domain WHERE knowledge_id = 10
         delete:
-          cron: 0 0/1 * * * ?
-          enable: true
+          cron: 0 0 0/1 * * ?
+          enable: false
+          offsetSecond: -600
+      ipvanishvpn_servername:
+        id: 102
+        name: ipvanishvpn_servername
+        update:
+          cron: 0 0 0/1 * * ?
+          enable: false
+          sql: SELECT domain AS domain FROM cn_vpn_learning_domain WHERE knowledge_id = 10
+        delete:
+          cron: 0 0 0/1 * * ?
+          enable: false
+          offsetSecond: -600
+      ivacyvpn_servername:
+        id: 103
+        name: ivacyvpn_servername
+        update:
+          cron: 0 0 0/1 * * ?
+          enable: false
+          sql: SELECT domain AS domain FROM cn_vpn_learning_domain WHERE knowledge_id = 10
+        delete:
+          cron: 0 0 0/1 * * ?
+          enable: false
+          offsetSecond: -600
+      vpnunlimited_servername:
+        id: 104
+        name: vpnunlimited_servername
+        update:
+          cron: 0 0 0/1 * * ?
+          enable: false
+          sql: SELECT domain AS domain FROM cn_vpn_learning_domain WHERE knowledge_id = 10
+        delete:
+          cron: 0 0 0/1 * * ?
+          enable: false
+          offsetSecond: -600
+      vpn4fame_servername:
+        id: 105
+        name: vpn4fame_servername
+        update:
+          cron: 0 0 0/1 * * ?
+          enable: false
+          sql: SELECT domain AS domain FROM cn_vpn_learning_domain WHERE knowledge_id = 10
+        delete:
+          cron: 0 0 0/1 * * ?
+          enable: false
           offsetSecond: -600

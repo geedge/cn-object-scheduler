@@ -3,11 +3,8 @@ package com.geedge.scheduler;
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.net.Ipv4Util;
-import cn.hutool.core.net.MaskBit;
 import cn.hutool.core.util.BooleanUtil;
 import com.geedge.common.constant.TsgObject;
-import com.geedge.common.enums.AddressFormat;
 import com.geedge.common.util.TsgUtil;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
@@ -19,9 +16,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.net.Inet4Address;
-import java.net.Inet6Address;
-import java.net.InetAddress;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -52,15 +46,110 @@ public class FqdnScheduler {
     @Value("${tsg.object.fqdn.cyberghostvpn_servername.delete.offsetSecond}")
     private Integer cyberghostvpnServernameOffsetSecond;
 
-
     @Scheduled(cron = "${tsg.object.fqdn.cyberghostvpn_servername.update.cron}")
-    public void scheduledExecutorUpdate() {
+    public void updateCyberghostvpn() {
         executeUpdate(cyberghostvpnServernameId, cyberghostvpnServernameName, cyberghostvpnServernameUpdateEnable, cyberghostvpnServernameSql);
     }
 
     @Scheduled(cron = "${tsg.object.fqdn.cyberghostvpn_servername.delete.cron}")
-    public void scheduledExecutorDelete() {
+    public void deleteCyberghostvpn() {
         executeDelete(cyberghostvpnServernameId, cyberghostvpnServernameDeleteEnable, cyberghostvpnServernameOffsetSecond);
+    }
+
+    @Value("${tsg.object.fqdn.ipvanishvpn_servername.id}")
+    private Integer ipvanishvpnServernameId;
+    @Value("${tsg.object.fqdn.ipvanishvpn_servername.name}")
+    private String ipvanishvpnServernameName;
+    @Value("${tsg.object.fqdn.ipvanishvpn_servername.update.enable}")
+    private Boolean ipvanishvpnServernameUpdateEnable;
+    @Value("${tsg.object.fqdn.ipvanishvpn_servername.update.sql}")
+    private String ipvanishvpnServernameSql;
+    @Value("${tsg.object.fqdn.ipvanishvpn_servername.delete.enable}")
+    private Boolean ipvanishvpnServernameDeleteEnable;
+    @Value("${tsg.object.fqdn.ipvanishvpn_servername.delete.offsetSecond}")
+    private Integer ipvanishvpnServernameOffsetSecond;
+
+    @Scheduled(cron = "${tsg.object.fqdn.ipvanishvpn_servername.update.cron}")
+    public void updateIpvanishvpn() {
+        executeUpdate(ipvanishvpnServernameId, ipvanishvpnServernameName, ipvanishvpnServernameUpdateEnable, ipvanishvpnServernameSql);
+    }
+
+    @Scheduled(cron = "${tsg.object.fqdn.ipvanishvpn_servername.delete.cron}")
+    public void deleteIpvanishvpn() {
+        executeDelete(ipvanishvpnServernameId, ipvanishvpnServernameDeleteEnable, ipvanishvpnServernameOffsetSecond);
+    }
+
+
+    @Value("${tsg.object.fqdn.ivacyvpn_servername.id}")
+    private Integer ivacyvpnServernameId;
+    @Value("${tsg.object.fqdn.ivacyvpn_servername.name}")
+    private String ivacyvpnServernameName;
+    @Value("${tsg.object.fqdn.ivacyvpn_servername.update.enable}")
+    private Boolean ivacyvpnServernameUpdateEnable;
+    @Value("${tsg.object.fqdn.ivacyvpn_servername.update.sql}")
+    private String ivacyvpnServernameSql;
+    @Value("${tsg.object.fqdn.ivacyvpn_servername.delete.enable}")
+    private Boolean ivacyvpnServernameDeleteEnable;
+    @Value("${tsg.object.fqdn.ivacyvpn_servername.delete.offsetSecond}")
+    private Integer ivacyvpnServernameOffsetSecond;
+
+
+    @Scheduled(cron = "${tsg.object.fqdn.ivacyvpn_servername.update.cron}")
+    public void updateIvacyvpn() {
+        executeUpdate(ivacyvpnServernameId, ivacyvpnServernameName, ivacyvpnServernameUpdateEnable, ivacyvpnServernameSql);
+    }
+
+    @Scheduled(cron = "${tsg.object.fqdn.ivacyvpn_servername.delete.cron}")
+    public void deleteIvacyvpn() {
+        executeDelete(ivacyvpnServernameId, ivacyvpnServernameDeleteEnable, ivacyvpnServernameOffsetSecond);
+    }
+
+    @Value("${tsg.object.fqdn.vpnunlimited_servername.id}")
+    private Integer vpnunlimitedServernameId;
+    @Value("${tsg.object.fqdn.vpnunlimited_servername.name}")
+    private String vpnunlimitedServernameName;
+    @Value("${tsg.object.fqdn.vpnunlimited_servername.update.enable}")
+    private Boolean vpnunlimitedServernameUpdateEnable;
+    @Value("${tsg.object.fqdn.vpnunlimited_servername.update.sql}")
+    private String vpnunlimitedServernameSql;
+    @Value("${tsg.object.fqdn.vpnunlimited_servername.delete.enable}")
+    private Boolean vpnunlimitedServernameDeleteEnable;
+    @Value("${tsg.object.fqdn.vpnunlimited_servername.delete.offsetSecond}")
+    private Integer vpnunlimitedServernameOffsetSecond;
+
+
+    @Scheduled(cron = "${tsg.object.fqdn.vpnunlimited_servername.update.cron}")
+    public void updateVpnunlimited() {
+        executeUpdate(vpnunlimitedServernameId, vpnunlimitedServernameName, vpnunlimitedServernameUpdateEnable, vpnunlimitedServernameSql);
+    }
+
+    @Scheduled(cron = "${tsg.object.fqdn.vpnunlimited_servername.delete.cron}")
+    public void deleteVpnunlimited() {
+        executeDelete(vpnunlimitedServernameId, vpnunlimitedServernameDeleteEnable, vpnunlimitedServernameOffsetSecond);
+    }
+
+    @Value("${tsg.object.fqdn.vpn4fame_servername.id}")
+    private Integer vpn4fameServernameId;
+    @Value("${tsg.object.fqdn.vpn4fame_servername.name}")
+    private String vpn4fameServernameName;
+    @Value("${tsg.object.fqdn.vpn4fame_servername.update.enable}")
+    private Boolean vpn4fameServernameUpdateEnable;
+    @Value("${tsg.object.fqdn.vpn4fame_servername.update.sql}")
+    private String vpn4fameServernameSql;
+    @Value("${tsg.object.fqdn.vpn4fame_servername.delete.enable}")
+    private Boolean vpn4fameServernameDeleteEnable;
+    @Value("${tsg.object.fqdn.vpn4fame_servername.delete.offsetSecond}")
+    private Integer vpn4fameServernameOffsetSecond;
+
+
+    @Scheduled(cron = "${tsg.object.fqdn.vpn4fame_servername.update.cron}")
+    public void updateVpn4fame() {
+        executeUpdate(vpn4fameServernameId, vpn4fameServernameName, vpn4fameServernameUpdateEnable, vpn4fameServernameSql);
+    }
+
+    @Scheduled(cron = "${tsg.object.fqdn.vpn4fame_servername.delete.cron}")
+    public void deleteVpn4fame() {
+        executeDelete(vpn4fameServernameId, vpn4fameServernameDeleteEnable, vpn4fameServernameOffsetSecond);
     }
 
     private static void executeUpdate(Integer id, String name, Boolean enable, String sql) {
@@ -78,23 +167,32 @@ public class FqdnScheduler {
             for (Record record : data) {
                 Map<String, Object> item = Maps.newHashMap();
                 String domain = record.get("domain");
-                Map<String, Object> pattern = Maps.newHashMap();
-                pattern.put(TsgObject.KEY_OBJECT_MEMBER_ITEMS_STRING_PATTERNS_KEYWORDS, domain);
+
                 List<Map<String, Object>> patterns = Lists.newArrayList();
+                Map<String, Object> pattern = Maps.newHashMap();
+                pattern.put(TsgObject.KEY_OBJECT_MEMBER_ITEMS_STRING_PATTERNS_KEYWORDS, "$" + domain);
                 patterns.add(pattern);
+
                 Map<String, Object> str = Maps.newHashMap();
                 str.put(TsgObject.KEY_OBJECT_MEMBER_ITEMS_STRING_PATTERNS, patterns);
+                str.put(TsgObject.KEY_OBJECT_MEMBER_ITEMS_STRING_EXPR_TYPE, TsgObject.VALUE_OBJECT_MEMBER_ITEMS_STRING_EXPR_TYPE_0);
+                str.put(TsgObject.KEY_OBJECT_MEMBER_ITEMS_STRING_IS_HEXBIN, TsgObject.VALUE_OBJECT_MEMBER_ITEMS_STRING_IS_HEXBIN_0);
+
                 item.put(TsgObject.KEY_OBJECT_MEMBER_ITEMS_OP, TsgObject.VALUE_OBJECT_MEMBER_ITEMS_OP_ADD);
                 item.put(TsgObject.KEY_OBJECT_MEMBER_ITEMS_STRING, str);
+
                 items.add(item);
             }
+
             Map<String, Object> member = Maps.newHashMap();
             member.put(TsgObject.KEY_OBJECT_MEMBER_TYPE, TsgObject.VALUE_OBJECT_MEMBER_TYPE_1);
             member.put(TsgObject.KEY_OBJECT_MEMBER_ITEMS, items);
+
             Map<String, Object> obj = Maps.newHashMap();
             obj.put(TsgObject.KEY_OBJECT_NAME, name);
             obj.put(TsgObject.KEY_OBJECT_TYPE, TsgObject.VALUE_OBJECT_TYPE_FQDN);
             obj.put(TsgObject.KEY_OBJECT_MEMBER, member);
+
             Map<String, Object> body = Maps.newHashMap();
             body.put(TsgObject.KEY_VSYS_ID, TsgObject.VALUE_VSYS_ID_1);
             body.put(TsgObject.KEY_OBJECT, obj);
