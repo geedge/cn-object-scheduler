@@ -1,0 +1,44 @@
+server:
+  port: 9999
+spring:
+  application:
+    name: cn-object-scheduler
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.44.53:3306/cn_api?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=UTC&failOverReadOnly=false&connectTimeout=10000&socketTimeout=30000
+    username: root
+    password: 111111
+tsg:
+  system:
+    url: http://192.168.44.3:80
+    username: wangwei
+    password: ImlUl8/Hdt0MaS1LEnyuCg==
+    token: aa2bdec5518ad131f71944b13ce5c298&1&
+    httpTimeout: 3600000
+  object:
+    ip:
+      #指定排除的IP. 1.如果没有可不写值，2.若有多个用英文逗号,分隔如: 127.0.0.1,127.0.0.2，3.可适用IP段匹配，如：127.*
+      excludeValue: 0.0.0.0,255.255.255.255,127.*,8.8.8.8,1.1.1.1
+      cyberghostvpn_serverip:
+        id: 1309738
+        name: cn_vpn_ip_learning
+        update:
+          cron: 0 0/1 * * * ?
+          enable: true
+          sql: SELECT addr_format AS addrFormat, ip1 AS ip1, ip2 AS ip2 FROM cn_vpn_learning_ip WHERE knowledge_id = 10
+        delete:
+          cron: 0 0/1 * * * ?
+          enable: true
+          offsetSecond: -600
+    fqdn:
+      cyberghostvpn_servername:
+        id: 1309740
+        name: cn_vpn_ip_learning
+        update:
+          cron: 35 0/1 * * * ?
+          enable: true
+          sql: SELECT domain AS domain FROM cn_vpn_learning_domain WHERE knowledge_id = 10
+        delete:
+          cron: 0 0/1 * * * ?
+          enable: true
+          offsetSecond: -600
