@@ -11,6 +11,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
+import io.prometheus.client.CollectorRegistry;
+import io.prometheus.client.Counter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -45,10 +47,11 @@ public class FqdnScheduler {
     private Boolean cyberghostvpnServernameDeleteEnable;
     @Value("${tsg.object.fqdn.cyberghostvpn_servername.delete.offsetSecond}")
     private Integer cyberghostvpnServernameOffsetSecond;
+    public Counter cyberghostvpnServernameCounter = Counter.build("cyberghostvpn_servername_counter", "COUNTER HELP").register(CollectorRegistry.defaultRegistry);
 
     @Scheduled(cron = "${tsg.object.fqdn.cyberghostvpn_servername.update.cron}")
     public void updateCyberghostvpn() {
-        executeUpdate(cyberghostvpnServernameId, cyberghostvpnServernameName, cyberghostvpnServernameUpdateEnable, cyberghostvpnServernameSql);
+        executeUpdate(cyberghostvpnServernameId, cyberghostvpnServernameName, cyberghostvpnServernameUpdateEnable, cyberghostvpnServernameSql, cyberghostvpnServernameCounter);
     }
 
     @Scheduled(cron = "${tsg.object.fqdn.cyberghostvpn_servername.delete.cron}")
@@ -68,10 +71,11 @@ public class FqdnScheduler {
     private Boolean ipvanishvpnServernameDeleteEnable;
     @Value("${tsg.object.fqdn.ipvanishvpn_servername.delete.offsetSecond}")
     private Integer ipvanishvpnServernameOffsetSecond;
+    public Counter ipvanishvpnServernameCounter = Counter.build("ipvanishvpn_servername_counter", "COUNTER HELP").register(CollectorRegistry.defaultRegistry);
 
     @Scheduled(cron = "${tsg.object.fqdn.ipvanishvpn_servername.update.cron}")
     public void updateIpvanishvpn() {
-        executeUpdate(ipvanishvpnServernameId, ipvanishvpnServernameName, ipvanishvpnServernameUpdateEnable, ipvanishvpnServernameSql);
+        executeUpdate(ipvanishvpnServernameId, ipvanishvpnServernameName, ipvanishvpnServernameUpdateEnable, ipvanishvpnServernameSql, ipvanishvpnServernameCounter);
     }
 
     @Scheduled(cron = "${tsg.object.fqdn.ipvanishvpn_servername.delete.cron}")
@@ -92,11 +96,11 @@ public class FqdnScheduler {
     private Boolean ivacyvpnServernameDeleteEnable;
     @Value("${tsg.object.fqdn.ivacyvpn_servername.delete.offsetSecond}")
     private Integer ivacyvpnServernameOffsetSecond;
-
+    public Counter ivacyvpnServernameCounter = Counter.build("ivacyvpn_servername_counter", "COUNTER HELP").register(CollectorRegistry.defaultRegistry);
 
     @Scheduled(cron = "${tsg.object.fqdn.ivacyvpn_servername.update.cron}")
     public void updateIvacyvpn() {
-        executeUpdate(ivacyvpnServernameId, ivacyvpnServernameName, ivacyvpnServernameUpdateEnable, ivacyvpnServernameSql);
+        executeUpdate(ivacyvpnServernameId, ivacyvpnServernameName, ivacyvpnServernameUpdateEnable, ivacyvpnServernameSql, ivacyvpnServernameCounter);
     }
 
     @Scheduled(cron = "${tsg.object.fqdn.ivacyvpn_servername.delete.cron}")
@@ -116,11 +120,11 @@ public class FqdnScheduler {
     private Boolean vpnunlimitedServernameDeleteEnable;
     @Value("${tsg.object.fqdn.vpnunlimited_servername.delete.offsetSecond}")
     private Integer vpnunlimitedServernameOffsetSecond;
-
+    public Counter vpnunlimitedServernameCounter = Counter.build("vpnunlimited_servername_counter", "COUNTER HELP").register(CollectorRegistry.defaultRegistry);
 
     @Scheduled(cron = "${tsg.object.fqdn.vpnunlimited_servername.update.cron}")
     public void updateVpnunlimited() {
-        executeUpdate(vpnunlimitedServernameId, vpnunlimitedServernameName, vpnunlimitedServernameUpdateEnable, vpnunlimitedServernameSql);
+        executeUpdate(vpnunlimitedServernameId, vpnunlimitedServernameName, vpnunlimitedServernameUpdateEnable, vpnunlimitedServernameSql, vpnunlimitedServernameCounter);
     }
 
     @Scheduled(cron = "${tsg.object.fqdn.vpnunlimited_servername.delete.cron}")
@@ -140,11 +144,11 @@ public class FqdnScheduler {
     private Boolean vpn4fameServernameDeleteEnable;
     @Value("${tsg.object.fqdn.vpn4fame_servername.delete.offsetSecond}")
     private Integer vpn4fameServernameOffsetSecond;
-
+    public Counter vpn4fameServernameCounter = Counter.build("vpn4fame_servername_counter", "COUNTER HELP").register(CollectorRegistry.defaultRegistry);
 
     @Scheduled(cron = "${tsg.object.fqdn.vpn4fame_servername.update.cron}")
     public void updateVpn4fame() {
-        executeUpdate(vpn4fameServernameId, vpn4fameServernameName, vpn4fameServernameUpdateEnable, vpn4fameServernameSql);
+        executeUpdate(vpn4fameServernameId, vpn4fameServernameName, vpn4fameServernameUpdateEnable, vpn4fameServernameSql, vpn4fameServernameCounter);
     }
 
     @Scheduled(cron = "${tsg.object.fqdn.vpn4fame_servername.delete.cron}")
@@ -152,7 +156,7 @@ public class FqdnScheduler {
         executeDelete(vpn4fameServernameId, vpn4fameServernameDeleteEnable, vpn4fameServernameOffsetSecond);
     }
 
-    private static void executeUpdate(Integer id, String name, Boolean enable, String sql) {
+    private static void executeUpdate(Integer id, String name, Boolean enable, String sql, Counter counter) {
         log.info("{}: started update task.", id);
         if (BooleanUtil.isFalse(enable)) {
             log.warn("{}: interrupted update task. enable: {}", id, enable);
@@ -170,7 +174,7 @@ public class FqdnScheduler {
 
                 List<Map<String, Object>> patterns = Lists.newArrayList();
                 Map<String, Object> pattern = Maps.newHashMap();
-                pattern.put(TsgObject.KEY_OBJECT_MEMBER_ITEMS_STRING_PATTERNS_KEYWORDS, "$" + domain);
+                pattern.put(TsgObject.KEY_OBJECT_MEMBER_ITEMS_STRING_PATTERNS_KEYWORDS, domain);
                 patterns.add(pattern);
 
                 Map<String, Object> str = Maps.newHashMap();
@@ -197,7 +201,11 @@ public class FqdnScheduler {
             body.put(TsgObject.KEY_VSYS_ID, TsgObject.VALUE_VSYS_ID_1);
             body.put(TsgObject.KEY_OBJECT, obj);
             log.info("{}: build api params, items size: {}, cost {} seconds", id, items.size(), watch.elapsed(TimeUnit.SECONDS));
+            if (items.isEmpty()) {
+                return;
+            }
             TsgUtil.updateObjectById(id, body);
+            counter.inc(items.size());
         } catch (Exception e) {
             log.error("{}: failed to execute update task. message: {}", id, e.getMessage());
             throw new RuntimeException(e);

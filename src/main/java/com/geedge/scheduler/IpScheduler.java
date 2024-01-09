@@ -15,6 +15,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
+import io.prometheus.client.CollectorRegistry;
+import io.prometheus.client.Counter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -58,10 +60,11 @@ public class IpScheduler {
     private Boolean cyberghostvpnServeripDeleteEnable;
     @Value("${tsg.object.ip.cyberghostvpn_serverip.delete.offsetSecond}")
     private Integer cyberghostvpnServeripOffsetSecond;
+    public Counter cyberghostvpnServeripCounter = Counter.build("cyberghostvpn_serverip_counter", "COUNTER HELP").register(CollectorRegistry.defaultRegistry);
 
     @Scheduled(cron = "${tsg.object.ip.cyberghostvpn_serverip.update.cron}")
     public void updateCyberghostvpn() {
-        executeUpdate(cyberghostvpnServeripId, cyberghostvpnServeripName, cyberghostvpnServeripUpdateEnable, cyberghostvpnServeripSql);
+        executeUpdate(cyberghostvpnServeripId, cyberghostvpnServeripName, cyberghostvpnServeripUpdateEnable, cyberghostvpnServeripSql, cyberghostvpnServeripCounter);
     }
 
     @Scheduled(cron = "${tsg.object.ip.cyberghostvpn_serverip.delete.cron}")
@@ -81,10 +84,11 @@ public class IpScheduler {
     private Boolean hotspotvpnServeripDeleteEnable;
     @Value("${tsg.object.ip.hotspotvpn_serverip.delete.offsetSecond}")
     private Integer hotspotvpnServeripOffsetSecond;
+    public Counter hotspotvpnServeripCounter = Counter.build("hotspotvpn_serverip_counter", "COUNTER HELP").register(CollectorRegistry.defaultRegistry);
 
     @Scheduled(cron = "${tsg.object.ip.hotspotvpn_serverip.update.cron}")
     public void updateHotspotvpn() {
-        executeUpdate(hotspotvpnServeripId, hotspotvpnServeripName, hotspotvpnServeripUpdateEnable, hotspotvpnServeripSql);
+        executeUpdate(hotspotvpnServeripId, hotspotvpnServeripName, hotspotvpnServeripUpdateEnable, hotspotvpnServeripSql, hotspotvpnServeripCounter);
     }
 
     @Scheduled(cron = "${tsg.object.ip.hotspotvpn_serverip.delete.cron}")
@@ -104,10 +108,11 @@ public class IpScheduler {
     private Boolean ipvanishvpnServeripDeleteEnable;
     @Value("${tsg.object.ip.ipvanishvpn_serverip.delete.offsetSecond}")
     private Integer ipvanishvpnServeripOffsetSecond;
+    public Counter ipvanishvpnServeripCounter = Counter.build("ipvanishvpn_serverip_counter", "COUNTER HELP").register(CollectorRegistry.defaultRegistry);
 
     @Scheduled(cron = "${tsg.object.ip.ipvanishvpn_serverip.update.cron}")
     public void updateIpvanishvpn() {
-        executeUpdate(ipvanishvpnServeripId, ipvanishvpnServeripName, ipvanishvpnServeripUpdateEnable, ipvanishvpnServeripSql);
+        executeUpdate(ipvanishvpnServeripId, ipvanishvpnServeripName, ipvanishvpnServeripUpdateEnable, ipvanishvpnServeripSql, ipvanishvpnServeripCounter);
     }
 
     @Scheduled(cron = "${tsg.object.ip.ipvanishvpn_serverip.delete.cron}")
@@ -127,10 +132,11 @@ public class IpScheduler {
     private Boolean geckovpnServeripDeleteEnable;
     @Value("${tsg.object.ip.geckovpn_serverip.delete.offsetSecond}")
     private Integer geckovpnServeripOffsetSecond;
+    public Counter geckovpnServeripCounter = Counter.build("geckovpn_serverip_counter", "COUNTER HELP").register(CollectorRegistry.defaultRegistry);
 
     @Scheduled(cron = "${tsg.object.ip.geckovpn_serverip.update.cron}")
     public void updateGeckovpn() {
-        executeUpdate(geckovpnServeripId, geckovpnServeripName, geckovpnServeripUpdateEnable, geckovpnServeripSql);
+        executeUpdate(geckovpnServeripId, geckovpnServeripName, geckovpnServeripUpdateEnable, geckovpnServeripSql, geckovpnServeripCounter);
     }
 
     @Scheduled(cron = "${tsg.object.ip.geckovpn_serverip.delete.cron}")
@@ -150,10 +156,11 @@ public class IpScheduler {
     private Boolean ivacyvpnServeripDeleteEnable;
     @Value("${tsg.object.ip.ivacyvpn_serverip.delete.offsetSecond}")
     private Integer ivacyvpnServeripOffsetSecond;
+    public Counter ivacyvpnServeripCounter = Counter.build("ivacyvpn_serverip_counter", "COUNTER HELP").register(CollectorRegistry.defaultRegistry);
 
     @Scheduled(cron = "${tsg.object.ip.ivacyvpn_serverip.update.cron}")
     public void updateIvacyvpn() {
-        executeUpdate(ivacyvpnServeripId, ivacyvpnServeripName, ivacyvpnServeripUpdateEnable, ivacyvpnServeripSql);
+        executeUpdate(ivacyvpnServeripId, ivacyvpnServeripName, ivacyvpnServeripUpdateEnable, ivacyvpnServeripSql, ivacyvpnServeripCounter);
     }
 
     @Scheduled(cron = "${tsg.object.ip.ivacyvpn_serverip.delete.cron}")
@@ -174,10 +181,11 @@ public class IpScheduler {
     private Boolean turbovpnServeripDeleteEnable;
     @Value("${tsg.object.ip.turbovpn_serverip.delete.offsetSecond}")
     private Integer turbovpnServeripOffsetSecond;
+    public Counter turbovpnServeripCounter = Counter.build("turbovpn_serverip_counter", "COUNTER HELP").register(CollectorRegistry.defaultRegistry);
 
     @Scheduled(cron = "${tsg.object.ip.turbovpn_serverip.update.cron}")
     public void updateTurbovpn() {
-        executeUpdate(turbovpnServeripId, turbovpnServeripName, turbovpnServeripUpdateEnable, turbovpnServeripSql);
+        executeUpdate(turbovpnServeripId, turbovpnServeripName, turbovpnServeripUpdateEnable, turbovpnServeripSql, turbovpnServeripCounter);
     }
 
     @Scheduled(cron = "${tsg.object.ip.turbovpn_serverip.delete.cron}")
@@ -197,10 +205,11 @@ public class IpScheduler {
     private Boolean vpnunlimitedServeripDeleteEnable;
     @Value("${tsg.object.ip.vpnunlimited_serverip.delete.offsetSecond}")
     private Integer vpnunlimitedServeripOffsetSecond;
+    public Counter vpnunlimitedServeripCounter = Counter.build("vpnunlimited_serverip_counter", "COUNTER HELP").register(CollectorRegistry.defaultRegistry);
 
     @Scheduled(cron = "${tsg.object.ip.vpnunlimited_serverip.update.cron}")
     public void updateVpnunlimited() {
-        executeUpdate(vpnunlimitedServeripId, vpnunlimitedServeripName, vpnunlimitedServeripUpdateEnable, vpnunlimitedServeripSql);
+        executeUpdate(vpnunlimitedServeripId, vpnunlimitedServeripName, vpnunlimitedServeripUpdateEnable, vpnunlimitedServeripSql, vpnunlimitedServeripCounter);
     }
 
     @Scheduled(cron = "${tsg.object.ip.vpnunlimited_serverip.delete.cron}")
@@ -220,10 +229,11 @@ public class IpScheduler {
     private Boolean windscribevpnServeripDeleteEnable;
     @Value("${tsg.object.ip.windscribevpn_serverip.delete.offsetSecond}")
     private Integer windscribevpnServeripOffsetSecond;
+    public Counter windscribevpnServeripCounter = Counter.build("windscribevpn_serverip_counter", "COUNTER HELP").register(CollectorRegistry.defaultRegistry);
 
     @Scheduled(cron = "${tsg.object.ip.windscribevpn_serverip.update.cron}")
     public void updateWindscribevpn() {
-        executeUpdate(windscribevpnServeripId, windscribevpnServeripName, windscribevpnServeripUpdateEnable, windscribevpnServeripSql);
+        executeUpdate(windscribevpnServeripId, windscribevpnServeripName, windscribevpnServeripUpdateEnable, windscribevpnServeripSql, windscribevpnServeripCounter);
     }
 
     @Scheduled(cron = "${tsg.object.ip.windscribevpn_serverip.delete.cron}")
@@ -243,10 +253,11 @@ public class IpScheduler {
     private Boolean vpn4fameServeripDeleteEnable;
     @Value("${tsg.object.ip.vpn4fame_serverip.delete.offsetSecond}")
     private Integer vpn4fameServeripOffsetSecond;
+    public Counter vpn4fameServeripCounter = Counter.build("vpn4fame_serverip_counter", "COUNTER HELP").register(CollectorRegistry.defaultRegistry);
 
     @Scheduled(cron = "${tsg.object.ip.vpn4fame_serverip.update.cron}")
     public void updateVpn4fame() {
-        executeUpdate(vpn4fameServeripId, vpn4fameServeripName, vpn4fameServeripUpdateEnable, vpn4fameServeripSql);
+        executeUpdate(vpn4fameServeripId, vpn4fameServeripName, vpn4fameServeripUpdateEnable, vpn4fameServeripSql, vpn4fameServeripCounter);
     }
 
     @Scheduled(cron = "${tsg.object.ip.vpn4fame_serverip.delete.cron}")
@@ -266,10 +277,11 @@ public class IpScheduler {
     private Boolean protonvpnIpDeleteEnable;
     @Value("${tsg.object.ip.protonvpn_ip.delete.offsetSecond}")
     private Integer protonvpnIpOffsetSecond;
+    public Counter protonvpnIpCounter = Counter.build("protonvpn_ip_counter", "COUNTER HELP").register(CollectorRegistry.defaultRegistry);
 
     @Scheduled(cron = "${tsg.object.ip.protonvpn_ip.update.cron}")
     public void updateProtonvpn() {
-        executeUpdate(protonvpnIpId, protonvpnIpName, protonvpnIpUpdateEnable, protonvpnIpSql);
+        executeUpdate(protonvpnIpId, protonvpnIpName, protonvpnIpUpdateEnable, protonvpnIpSql, protonvpnIpCounter);
     }
 
     @Scheduled(cron = "${tsg.object.ip.protonvpn_ip.delete.cron}")
@@ -289,10 +301,11 @@ public class IpScheduler {
     private Boolean expressvpnIpDeleteEnable;
     @Value("${tsg.object.ip.expressvpn_ip.delete.offsetSecond}")
     private Integer expressvpnIpOffsetSecond;
+    public Counter expressvpnIpCounter = Counter.build("expressvpn_ip_counter", "COUNTER HELP").register(CollectorRegistry.defaultRegistry);
 
     @Scheduled(cron = "${tsg.object.ip.expressvpn_ip.update.cron}")
     public void updateExpressvpn() {
-        executeUpdate(expressvpnIpId, expressvpnIpName, expressvpnIpUpdateEnable, expressvpnIpSql);
+        executeUpdate(expressvpnIpId, expressvpnIpName, expressvpnIpUpdateEnable, expressvpnIpSql, expressvpnIpCounter);
     }
 
     @Scheduled(cron = "${tsg.object.ip.expressvpn_ip.delete.cron}")
@@ -301,7 +314,7 @@ public class IpScheduler {
     }
 
 
-    private static void executeUpdate(Integer id, String name, Boolean enable, String sql) {
+    private static void executeUpdate(Integer id, String name, Boolean enable, String sql, Counter counter) {
         log.info("{}: started update task.", id);
         if (BooleanUtil.isFalse(enable)) {
             log.warn("{}: interrupted update task. enable: {}", id, enable);
@@ -365,7 +378,11 @@ public class IpScheduler {
             body.put(TsgObject.KEY_VSYS_ID, TsgObject.VALUE_VSYS_ID_1);
             body.put(TsgObject.KEY_OBJECT, obj);
             log.info("{}: build api params, items size: {}, cost {} seconds", id, items.size(), watch.elapsed(TimeUnit.SECONDS));
+            if (items.isEmpty()) {
+                return;
+            }
             TsgUtil.updateObjectById(id, body);
+            counter.inc(items.size());
         } catch (Exception e) {
             log.error("{}: failed to execute update task. message: {}", id, e.getMessage());
             throw new RuntimeException(e);
