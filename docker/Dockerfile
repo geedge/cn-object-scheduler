@@ -2,7 +2,7 @@ ARG JDK_IMAGE
 FROM ${JDK_IMAGE}
 MAINTAINER Galaxy
 VOLUME /tmp
-WORKDIR /home/tsg/galaxy/cn-object-scheduler
+WORKDIR /home/cn/galaxy/cn-object-scheduler
 COPY config config
 ARG JAR_FILE
 COPY ${JAR_FILE} cn-object-scheduler.jar
