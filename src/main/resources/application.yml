@@ -5,7 +5,7 @@ spring:
     name: cn-object-scheduler
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.44.53:3306/cn_api?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=UTC&failOverReadOnly=false&connectTimeout=10000&socketTimeout=30000
+    url: jdbc:mysql://192.168.44.53:3306/cn_api?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=UTC&failOverReadOnly=false&connectTimeout=10000&socketTimeout=300000
     username: root
     password: 111111
 logging:
