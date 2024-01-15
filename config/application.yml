@@ -13,8 +13,6 @@ logging:
 tsg:
   system:
     url: http://192.168.44.3:80
-    username:
-    password:
     token: aa2bdec5518ad131f71944b13ce5c298&1&
     httpTimeout: 3600000
   object:

@@ -26,8 +26,6 @@ import java.util.concurrent.TimeUnit;
 public class TsgUtil {
 
     public static String TSG_URL;
-    private static String TSG_USERNAME;
-    private static String TSG_PASSWORD;
     private static Integer httpTimeOut;
     private static String TSG_TOKEN;
 
@@ -41,16 +39,6 @@ public class TsgUtil {
         TSG_URL = url;
     }
 
-    @Value("${tsg.system.username}")
-    private void setTsgUsername(String username) {
-        TSG_USERNAME = username;
-    }
-
-    @Value("${tsg.system.password}")
-    private void setTsgPassword(String password) {
-        TSG_PASSWORD = password;
-    }
-
     @Value("${tsg.system.token}")
     private void setTsgToken(String token) {
         TSG_TOKEN = token;
@@ -60,32 +48,8 @@ public class TsgUtil {
         if (StrUtil.isNotEmpty(TSG_TOKEN)) {
             return TSG_TOKEN;
         }
-        String token = "";
-        Map<String, Object> map = Maps.newHashMap();
-        map.put("username", TSG_USERNAME);
-        map.put("password", TSG_PASSWORD);
-        try {
-            Stopwatch watch = Stopwatch.createStarted();
-            String response = HttpRequest.post(TSG_URL + "/v1/user/login")
-                    .body(JSONUtil.toJsonStr(map))
-                    .timeout(httpTimeOut)
-                    .execute().body();
-            log.info("get tsg-api token, cost {} seconds", watch.elapsed(TimeUnit.SECONDS));
-            if (StrUtil.isBlank(response)) {
-                log.error("failed to get TSG system token. response: {}", response);
-                throw new RuntimeException("ailed to get TSG system token. response: " + response);
-            }
-            JSONObject jsonObject = JSONUtil.parseObj(response);
-            if (!"200".equals(jsonObject.get("code").toString())) {
-                log.error("failed to get TSG system token. response: {}", response);
-                throw new RuntimeException("ailed to get TSG system token. response: " + response);
-            }
-            token = JSONUtil.parseObj(jsonObject.get("data")).get("token").toString();
-        } catch (Exception e) {
-            log.error("failed to get TSG system token. message: {}", e.getMessage());
-            throw e;
-        }
-        return token;
+        log.error("failed to get TSG system token.");
+        throw new IllegalArgumentException("failed to get TSG system token.");
     }
 
     public static void updateObjectById(Integer id, Map<String, Object> body) {
