@@ -313,6 +313,30 @@ public class IpScheduler {
         executeDelete(expressvpnIpId, expressvpnIpDeleteEnable, expressvpnIpOffsetSecond);
     }
 
+    @Value("${tsg.object.ip.psiphon3vpn_serverip.id}")
+    private Integer psiphon3vpnServeripId;
+    @Value("${tsg.object.ip.psiphon3vpn_serverip.name}")
+    private String psiphon3vpnServeripName;
+    @Value("${tsg.object.ip.psiphon3vpn_serverip.update.enable}")
+    private Boolean psiphon3vpnServeripUpdateEnable;
+    @Value("${tsg.object.ip.psiphon3vpn_serverip.update.sql}")
+    private String psiphon3vpnServeripSql;
+    @Value("${tsg.object.ip.psiphon3vpn_serverip.delete.enable}")
+    private Boolean psiphon3vpnServeripDeleteEnable;
+    @Value("${tsg.object.ip.psiphon3vpn_serverip.delete.offsetSecond}")
+    private Integer psiphon3vpnServeripOffsetSecond;
+    public Counter psiphon3vpnServeripCounter = Counter.build("psiphon3vpn_serverip_counter", "COUNTER HELP").register(CollectorRegistry.defaultRegistry);
+
+    @Scheduled(cron = "${tsg.object.ip.psiphon3vpn_serverip.update.cron}")
+    public void updatePsiphon3vpn() {
+        executeUpdate(psiphon3vpnServeripId, psiphon3vpnServeripName, psiphon3vpnServeripUpdateEnable, psiphon3vpnServeripSql, psiphon3vpnServeripCounter);
+    }
+
+    @Scheduled(cron = "${tsg.object.ip.psiphon3vpn_serverip.delete.cron}")
+    public void deletePsiphon3vpn() {
+        executeDelete(psiphon3vpnServeripId, psiphon3vpnServeripDeleteEnable, psiphon3vpnServeripOffsetSecond);
+    }
+
 
     private static void executeUpdate(Integer id, String name, Boolean enable, String sql, Counter counter) {
         log.info("{}: started update task.", id);

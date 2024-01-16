@@ -19,17 +19,6 @@ tsg:
     ip:
       #指定排除的IP. 1.如果没有可不写值，2.若有多个用英文逗号,分隔如: 127.0.0.1,127.0.0.2，3.可适用IP段匹配，如：127.*
       excludeValue: 0.0.0.0,255.255.255.255,127.*,8.8.8.8,1.1.1.1
-      cyberghostvpn_serverip:
-        id: 1
-        name: cyberghostvpn_serverip
-        update:
-          cron: 0 0 0/1 * * ?
-          enable: false
-          sql:
-        delete:
-          cron: 0 0 0/1 * * ?
-          enable: false
-          offsetSecond: -600
       hotspotvpn_serverip:
         id: 2
         name: hotspotvpn_serverip
@@ -42,8 +31,23 @@ tsg:
           enable: false
           offsetSecond: -600
       ipvanishvpn_serverip:
-        id: 3
+        id: 12
         name: ipvanishvpn_serverip
+
+      psiphon3vpn_serverip:
+        id: 1310853
+        name: psiphon3vpn_serverip
+        update:
+          cron: 0 0 0/1 * * ?
+          enable: false
+          sql:
+        delete:
+          cron: 0 0 0/1 * * ?
+          enable: false
+          offsetSecond: -600
+      cyberghostvpn_serverip:
+        id: 1
+        name: cyberghostvpn_serverip
         update:
           cron: 0 0 0/1 * * ?
           enable: false
