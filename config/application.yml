@@ -31,11 +31,18 @@ tsg:
           enable: false
           offsetSecond: -600
       ipvanishvpn_serverip:
-        id: 12
+        id: 3
         name: ipvanishvpn_serverip
-
+        update:
+          cron: 0 0 0/1 * * ?
+          enable: false
+          sql:
+        delete:
+          cron: 0 0 0/1 * * ?
+          enable: false
+          offsetSecond: -600
       psiphon3vpn_serverip:
-        id: 1310853
+        id: 12
         name: psiphon3vpn_serverip
         update:
           cron: 0 0 0/1 * * ?
