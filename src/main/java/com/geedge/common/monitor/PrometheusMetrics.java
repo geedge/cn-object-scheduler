@@ -1,4 +1,4 @@
-package com.geedge.common;
+package com.geedge.common.monitor;
 
 import io.prometheus.client.exporter.MetricsServlet;
 import org.springframework.web.bind.annotation.GetMapping;

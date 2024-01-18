@@ -38,5 +38,27 @@ public class TsgObject {
     public static final Integer VALUE_OBJECT_MEMBER_ITEMS_STRING_EXPR_TYPE_0 = 0;
     public static final Integer VALUE_OBJECT_MEMBER_ITEMS_STRING_IS_HEXBIN_0 = 0;
 
+    public static String TSG_OBJECT_ID_V2310 = "objectId";
+    public static String TSG_OBJECT_TYPE_V2310 = "objectType";
+    public static String TSG_IP_ADDR_OBJECT_V2310 = "ip";
+    public static String TSG_FQDN_OBJECT_V2310 = "fqdn";
+    public static String TSG_OBJECT_NAME_V2310 = "objectName";
+    public static String TSG_IS_BUILTIN_V2310 = "isBuiltin";
+    public static String TSG_IS_EXCLUSION_V2310 = "isExclusion";
+    public static String TSG_IS_VALID_V2310 = "isValid";
+    public static String TSG_ITEM_IP_V2310 = "ip";
+    public static String TSG_ITEM_PORT_V2310 = "port";
+    public static String TSG_VALUE_OBJECT_MEMBER_ITEMS_IP_PORT_RANGE_V2310 = "0-65535";
+    public static String TSG_ITEM_ISSESSION_V2310 = "isSession";
+    public static String TSG_ITEM_ENDPOINT_V2310 = "endpoint";
+    public static String TSG_OP_ACTION_V2310 = "opAction";
+    public static String TSG_UPDATE_V2310 = "update";
+    public static String TSG_OBJECT_LIST_V2310 = "objectList";
+    public static String TSG_VSYS_ID_V2310 = "vsysId";
+    public static String TSG_TSG_OBJECT_IDS_V2310 = "objectIds";
+    public static String TSG_ITEM_TYPE_V2310 = "itemType";
+    public static String TSG_KEYWORDARRAY_V2310 = "keywordArray";
+    public static String TSG_DELETE_ITEMS_BYL_TTIME_V2310 = "deleteItemsByLtTime";
+
 }
 

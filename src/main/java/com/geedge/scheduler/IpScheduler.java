@@ -7,6 +7,8 @@ import cn.hutool.core.net.Ipv4Util;
 import cn.hutool.core.net.MaskBit;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONObject;
 import com.geedge.common.constant.TsgObject;
 import com.geedge.common.enums.AddressFormat;
 import com.geedge.common.util.TsgUtil;
@@ -337,8 +339,24 @@ public class IpScheduler {
         executeDelete(psiphon3vpnServeripId, psiphon3vpnServeripDeleteEnable, psiphon3vpnServeripOffsetSecond);
     }
 
-
     private static void executeUpdate(Integer id, String name, Boolean enable, String sql, Counter counter) {
+        if (TsgUtil.isLatestVersion) {
+            executeUpdateLatest(id, name, enable, sql, counter);
+        } else {
+            executeUpdateOld(id, name, enable, sql, counter);
+        }
+    }
+
+    private static void executeDelete(Integer id, Boolean enable, Integer offsetSecond) {
+        if (TsgUtil.isLatestVersion) {
+            executeDeleteLatest(id, enable, offsetSecond);
+        } else {
+            executeDeleteOld(id, enable, offsetSecond);
+        }
+    }
+
+
+    private static void executeUpdateLatest(Integer id, String name, Boolean enable, String sql, Counter counter) {
         log.info("{}: started update task.", id);
         if (BooleanUtil.isFalse(enable)) {
             log.warn("{}: interrupted update task. enable: {}", id, enable);
@@ -413,7 +431,81 @@ public class IpScheduler {
         }
     }
 
-    private static void executeDelete(Integer id, Boolean enable, Integer offsetSecond) {
+    private static void executeUpdateOld(Integer id, String name, Boolean enable, String sql, Counter counter) {
+        log.info("{}: started update task.", id);
+        if (BooleanUtil.isFalse(enable)) {
+            log.warn("{}: interrupted update task. enable: {}", id, enable);
+            return;
+        }
+        try {
+            Stopwatch watch = Stopwatch.createStarted();
+            List<Record> data = Db.find(sql);
+            log.info("{}: query knowledge base content, cost {} seconds", id, watch.elapsed(TimeUnit.SECONDS));
+            watch.reset().start();
+            List<Map<String, Object>> items = Lists.newArrayList();
+            row:
+            for (Record record : data) {
+                String addressFormat = record.get("addrFormat");
+                String ip1 = record.get("ip1");
+                if (StrUtil.isBlank(ip1)) {
+                    continue;
+                }
+                for (String excludeItem : excludeList) {
+                    if (excludeItem.equals(ip1)) {
+                        continue row;
+                    }
+                    if (excludeItem.endsWith("*") && ip1.startsWith(excludeItem.replace("*", ""))) {
+                        continue row;
+                    }
+                }
+                String ip2 = record.get("ip2");
+                Map<String, Object> ip = Maps.newHashMap();
+                if (AddressFormat.CIDR.getValue().equalsIgnoreCase(addressFormat)) {
+                    int maskBit = Integer.parseInt(ip2);
+                    String mask = MaskBit.get(Integer.parseInt(ip2));
+                    String beginIpStr = Ipv4Util.getBeginIpStr(ip1, maskBit);
+                    String ipMask = Ipv4Util.formatIpBlock(beginIpStr, mask);
+                    ip.put(TsgObject.TSG_ITEM_IP_V2310, ipMask);
+                } else if (AddressFormat.RANGE.getValue().equalsIgnoreCase(addressFormat)) {
+                    ip.put(TsgObject.TSG_ITEM_IP_V2310, ip1 + "-" + ip2);
+                } else if (AddressFormat.SINGLE.getValue().equalsIgnoreCase(addressFormat)) {
+                    ip.put(TsgObject.TSG_ITEM_IP_V2310, ip1);
+                } else {
+                    log.warn("address format parse error: {}", record);
+                    continue;
+                }
+                ip.put(TsgObject.TSG_ITEM_PORT_V2310, TsgObject.TSG_VALUE_OBJECT_MEMBER_ITEMS_IP_PORT_RANGE_V2310);
+                ip.put(TsgObject.TSG_ITEM_ISSESSION_V2310, TsgObject.TSG_ITEM_ENDPOINT_V2310);
+                items.add(ip);
+            }
+            JSONArray array = new JSONArray();
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.set(TsgObject.TSG_OBJECT_ID_V2310, id);
+            jsonObject.set(TsgObject.TSG_OBJECT_TYPE_V2310, TsgObject.TSG_IP_ADDR_OBJECT_V2310);
+            jsonObject.set(TsgObject.TSG_OBJECT_NAME_V2310, name);
+            jsonObject.set(TsgObject.TSG_IS_BUILTIN_V2310, 0);
+            jsonObject.set(TsgObject.TSG_IS_EXCLUSION_V2310, 0);
+            jsonObject.set(TsgObject.TSG_IS_VALID_V2310, 1);
+            jsonObject.set("addItemList", items);
+            log.info("{}: build api params, items size: {}, cost {} seconds", id, items.size(), watch.elapsed(TimeUnit.SECONDS));
+            if (items.isEmpty()) {
+                return;
+            }
+            array.add(jsonObject);
+            JSONObject body = new JSONObject();
+            body.set(TsgObject.TSG_OP_ACTION_V2310, TsgObject.TSG_UPDATE_V2310);
+            body.set(TsgObject.TSG_OBJECT_LIST_V2310, array);
+
+            TsgUtil.updateObjectOld(body);
+            counter.inc(items.size());
+        } catch (Exception e) {
+            log.error("{}: failed to execute update task. message: {}", id, e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static void executeDeleteLatest(Integer id, Boolean enable, Integer offsetSecond) {
         log.info("{}: started delete task.", id);
         if (BooleanUtil.isFalse(enable)) {
             log.warn("{}: interrupted delete task. enable: {}", id, enable);
@@ -427,6 +519,29 @@ public class IpScheduler {
             form.put(TsgObject.KEY_VSYS_ID, TsgObject.VALUE_VSYS_ID_1);
             form.put(TsgObject.KEY_CREATED_BEFORE, datetimeZ);
             TsgUtil.deleteItemOfObjectById(id, form);
+        } catch (Exception e) {
+            log.error("{}: failed to execute delete task. message: {}", id, e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static void executeDeleteOld(Integer id, Boolean enable, Integer offsetSecond) {
+        log.info("{}: started delete task.", id);
+        if (BooleanUtil.isFalse(enable)) {
+            log.warn("{}: interrupted delete task. enable: {}", id, enable);
+            return;
+        }
+        try {
+            DateTime dateTime = DateUtil.offsetSecond(new Date(), offsetSecond).setTimeZone(TimeZone.getTimeZone("UTC"));
+            String datetimeZ = DateUtil.format(dateTime, DatePattern.UTC_PATTERN);
+            Map<String, Object> body = new HashMap<>(16);
+            body.put(TsgObject.TSG_DELETE_ITEMS_BYL_TTIME_V2310, datetimeZ);
+            body.put(TsgObject.TSG_ITEM_TYPE_V2310, TsgObject.TSG_ITEM_IP_V2310);
+            body.put(TsgObject.TSG_VSYS_ID_V2310, 1);
+            List<Object> objectIds = new ArrayList<>();
+            objectIds.add(id);
+            body.put(TsgObject.TSG_TSG_OBJECT_IDS_V2310, objectIds);
+            TsgUtil.deleteItemOfObjectOld(body);
         } catch (Exception e) {
             log.error("{}: failed to execute delete task. message: {}", id, e.getMessage());
             throw new RuntimeException(e);

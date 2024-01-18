@@ -12,9 +12,11 @@ logging:
   config: ./config/logback-spring.xml
 tsg:
   system:
-    url: http://192.168.44.3:80
-    token: aa2bdec5518ad131f71944b13ce5c298&1&
+    url: http://192.168.44.29:8080
+    ##token: aa2bdec5518ad131f71944b13ce5c298&1&
+    token: 1ca0350bc499a208a0edadb74d76a0ee&1&
     httpTimeout: 3600000
+    isLatestVersion: false
   object:
     ip:
       #指定排除的IP. 1.如果没有可不写值，2.若有多个用英文逗号,分隔如: 127.0.0.1,127.0.0.2，3.可适用IP段匹配，如：127.*
