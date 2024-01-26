@@ -175,7 +175,7 @@ tsg:
           enable: true
           offsetSecond: -10800
       ivacyvpn_servername:
-        id: 14185
+        id: 14183
         name: ivacyvpn_servername
         update:
           cron: 0 0 0/1 * * ?
