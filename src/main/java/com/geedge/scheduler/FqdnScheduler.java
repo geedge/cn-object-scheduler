@@ -155,6 +155,30 @@ public class FqdnScheduler {
         executeDelete(vpn4fameServernameId, vpn4fameServernameDeleteEnable, vpn4fameServernameOffsetSecond);
     }
 
+    @Value("${tsg.object.fqdn.windscribevpn_servername.id}")
+    private Integer windscribevpnServernameId;
+    @Value("${tsg.object.fqdn.windscribevpn_servername.name}")
+    private String windscribevpnServernameName;
+    @Value("${tsg.object.fqdn.windscribevpn_servername.update.enable}")
+    private Boolean windscribevpnServernameUpdateEnable;
+    @Value("${tsg.object.fqdn.windscribevpn_servername.update.sql}")
+    private String windscribevpnServernameSql;
+    @Value("${tsg.object.fqdn.windscribevpn_servername.delete.enable}")
+    private Boolean windscribevpnServernameDeleteEnable;
+    @Value("${tsg.object.fqdn.windscribevpn_servername.delete.offsetSecond}")
+    private Integer windscribevpnServernameOffsetSecond;
+    public Counter windscribevpnServernameCounter = Counter.build("windscribevpn_servername_counter", "COUNTER HELP").register(CollectorRegistry.defaultRegistry);
+
+    @Scheduled(cron = "${tsg.object.fqdn.windscribevpn_servername.update.cron}")
+    public void updateWindscribevpn() {
+        executeUpdate(windscribevpnServernameId, windscribevpnServernameName, windscribevpnServernameUpdateEnable, windscribevpnServernameSql, windscribevpnServernameCounter);
+    }
+
+    @Scheduled(cron = "${tsg.object.fqdn.windscribevpn_servername.delete.cron}")
+    public void deleteVWindscribevpn() {
+        executeDelete(windscribevpnServernameId, windscribevpnServernameDeleteEnable, windscribevpnServernameOffsetSecond);
+    }
+
     private static void executeUpdate(Integer id, String name, Boolean enable, String sql, Counter counter) {
         if (TsgUtil.isLatestVersion) {
             executeUpdateLatest(id, name, enable, sql, counter);
