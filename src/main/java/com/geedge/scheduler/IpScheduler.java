@@ -512,12 +512,44 @@ public class IpScheduler {
             return;
         }
         try {
-            DateTime dateTime = DateUtil.offsetSecond(new Date(), offsetSecond).setTimeZone(TimeZone.getTimeZone("UTC"));
-            String datetimeZ = DateUtil.format(dateTime, DatePattern.UTC_PATTERN);
+            DateTime deleteCursor = DateUtil.offsetSecond(new Date(), offsetSecond).setTimeZone(TimeZone.getTimeZone("UTC"));
+            String deleteCursorStr = DateUtil.format(deleteCursor, DatePattern.UTC_PATTERN);
+
+            JSONObject objectItemList = TsgUtil.getObjectItemList(id, "ip");
+            Object data = objectItemList.get("data");
+            if (StrUtil.isEmptyIfStr(data)) {
+                log.warn("No item does not need to be deleted");
+                return;
+            }
+            Map<String, Object> dataMap = (Map<String, Object>) data;
+            Object itemsObj = dataMap.get("items");
+            if (StrUtil.isEmptyIfStr(itemsObj) || StrUtil.isBlankIfStr(itemsObj)) {
+                log.warn("No item does not need to be deleted");
+                return;
+            }
+            List<Map<String, Object>> itemList = (List<Map<String, Object>>) itemsObj;
+            if (itemList.isEmpty()) {
+                log.warn("No item does not need to be deleted");
+                return;
+            }
+            Map<String, Object> map = itemList.get(0);
+            Object itemObj = map.get("ip");
+            if (StrUtil.isEmptyIfStr(itemObj)) {
+                log.warn("No item does not need to be deleted");
+                return;
+            }
+            Map<String, Object> itemMap = (Map<String, Object>) itemObj;
+            Object createdTimeObj = itemMap.get("created_time");
+            DateTime latestCreatedDateTime = DateUtil.parse(createdTimeObj.toString());
+            int compare = DateUtil.compare(deleteCursor, latestCreatedDateTime);
+            if (compare > 0) {
+                log.warn("Does not need to be deleted, avoid item to empty");
+                return;
+            }
             Map<String, Object> form = Maps.newHashMap();
             form.put(TsgObject.KEY_OBJECT_TYPE, TsgObject.VALUE_OBJECT_TYPE_IP);
             form.put(TsgObject.KEY_VSYS_ID, TsgObject.VALUE_VSYS_ID_1);
-            form.put(TsgObject.KEY_CREATED_BEFORE, datetimeZ);
+            form.put(TsgObject.KEY_CREATED_BEFORE, deleteCursorStr);
             TsgUtil.deleteItemOfObjectById(id, form);
         } catch (Exception e) {
             log.error("{}: failed to execute delete task. message: {}", id, e.getMessage());

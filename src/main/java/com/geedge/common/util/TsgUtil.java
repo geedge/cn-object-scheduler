@@ -57,6 +57,25 @@ public class TsgUtil {
         throw new IllegalArgumentException("failed to get TSG system token.");
     }
 
+    public static JSONObject getObjectItemList(Integer objectId, String objectType) {
+        Stopwatch watch = Stopwatch.createStarted();
+        String response = HttpRequest.get(TSG_URL + "/v1/policy/object/" + objectId + "/item?page_no=1&page_size=1&type=" + objectType)
+                .header(Header.AUTHORIZATION, getToken())
+                .timeout(httpTimeOut)
+                .execute().body();
+        log.info("get tsg-api, cost {} seconds", watch.elapsed(TimeUnit.SECONDS));
+        if (StrUtil.isBlank(response)) {
+            log.error("get {} Object error, response: {}", objectId, response);
+            throw new RuntimeException("get " + objectId + " Object error, response: " + response);
+        }
+        JSONObject jsonObject = JSONUtil.parseObj(response);
+        if (!"200".equals(jsonObject.get("code").toString())) {
+            log.error("get {} Object error, response: {}", objectId, response);
+            throw new RuntimeException("get " + objectId + " Object error, response: " + response);
+        }
+        return jsonObject;
+    }
+
     public static void updateObjectById(Integer id, Map<String, Object> body) {
         Stopwatch watch = Stopwatch.createStarted();
         String response = HttpRequest.put(TSG_URL + "/v1/policy/object/" + id)
