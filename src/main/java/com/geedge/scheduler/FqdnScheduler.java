@@ -175,7 +175,7 @@ public class FqdnScheduler {
     }
 
     @Scheduled(cron = "${tsg.object.fqdn.windscribevpn_servername.delete.cron}")
-    public void deleteVWindscribevpn() {
+    public void deleteWindscribevpn() {
         executeDelete(windscribevpnServernameId, windscribevpnServernameDeleteEnable, windscribevpnServernameOffsetSecond);
     }
 
