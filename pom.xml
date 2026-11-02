@@ -30,7 +30,7 @@
     <properties>
         <java.version>11</java.version>
         <guava.version>23.0</guava.version>
-        <hutool.version>5.7.7</hutool.version>
+        <hutool.version>5.8.21</hutool.version>
         <active.record.version>4.9.01</active.record.version>
         <mysql-connector-java.version>8.0.18</mysql-connector-java.version>
         <starter.druid.version>1.1.22</starter.druid.version>
